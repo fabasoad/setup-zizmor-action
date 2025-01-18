@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["rockylinux", "ubuntu"]
+        os: ["fedora", "ubuntu"]
     steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
