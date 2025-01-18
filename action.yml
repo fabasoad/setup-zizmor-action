@@ -39,11 +39,15 @@ runs:
       shell: sh
       working-directory: ${{ github.action_path }}/src
 
-    - name: Setup pip
+    - name: Setup python
       if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.pip-installed == 'false' }}
       uses: actions/setup-python@v5
       with:
         python-version: "3.x"
+
+    - name: Setup pip
+      if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.pip-installed == 'false' }}
+      run: python -m ensurepip --upgrade
 
     - name: Install zizmor
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
