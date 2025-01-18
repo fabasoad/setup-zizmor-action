@@ -1,0 +1,59 @@
+---
+name: "Setup zizmor"
+author: Yevhen Fabizhevskyi
+description: "This action installs zizmor CLI tool."
+branding:
+  icon: terminal
+  color: gray-dark
+inputs:
+  version:
+    description: zizmor version. Defaults to the latest version.
+    required: false
+    default: "latest"
+  force:
+    description: |
+      If "false" skips installation if zizmor is already installed. If "true"
+      installs zizmor in any case. Defaults to "false".
+    required: false
+    default: "false"
+outputs:
+  installed:
+    description: Whether zizmor was installed or not.
+    value: "${{ steps.install-zizmor.outcome == 'success' }}"
+runs:
+  using: "composite"
+  steps:
+    - name: Validate inputs
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
+        INPUT_FORCE: "${{ inputs.force }}"
+      run: ./validate-inputs.sh "${INPUT_VERSION}" "${INPUT_FORCE}"
+      shell: sh
+      working-directory: ${{ github.action_path }}/src
+
+    - name: Collect info
+      id: info
+      env:
+        INPUT_FORCE: "${{ inputs.force }}"
+      run: ./collect-info.sh "${INPUT_FORCE}"
+      shell: sh
+      working-directory: ${{ github.action_path }}/src
+
+    - name: Setup cargo
+      if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.setup-cargo == 'true' }}
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+
+    - name: Install zizmor
+      if: ${{ steps.info.outputs.bin-installed == 'false' }}
+      id: install-zizmor
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
+      run: ./install-zizmor.sh "${INPUT_VERSION}"
+      shell: sh
+      working-directory: ${{ steps.info.outputs.bin-path }}
+
+    - name: Print version
+      run: zizmor --version
+      shell: sh
