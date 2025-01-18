@@ -53,7 +53,7 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         if [ -n "${{ steps.setup-python.outputs.python-path }}" ]; then
-          dirname "${{ steps.setup-python.outputs.python-path }}"
+          ls -la "$(dirname "${{ steps.setup-python.outputs.python-path }}")"
         fi
         if [ "${INPUT_VERSION}" = "latest" ]; then
           ${{ steps.setup-python.outputs.python-path || 'python' }} --root-user-action -m pip install zizmor
