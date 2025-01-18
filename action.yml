@@ -39,11 +39,11 @@ runs:
       shell: sh
       working-directory: ${{ github.action_path }}/src
 
-    - name: Setup cargo
-      if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.setup-cargo == 'true' }}
-      uses: actions-rs/toolchain@v1
+    - name: Setup pip
+      if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.pip-installed == 'false' }}
+      uses: actions/setup-python@v5
       with:
-        toolchain: stable
+        cache: "pip"
 
     - name: Install zizmor
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
