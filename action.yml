@@ -54,10 +54,11 @@ runs:
       run: |
         python_version_minor="$(echo "${{ steps.setup-python.outputs.python-version }}" | cut -d '.' -f 1,2)"
         python_exec="${{ steps.setup-python.outputs.python-path || 'python' }}${python_version_minor}"
+        ls -la "$(dirname "${python_exec}")"
         if [ "${INPUT_VERSION}" = "latest" ]; then
-          ${python_exec} --root-user-action=ignore -m pip install zizmor
+          ${python_exec} -m pip install zizmor --root-user-action=ignore
         else
-          ${python_exec} --root-user-action=ignore -m pip install zizmor==${INPUT_VERSION}
+          ${python_exec} -m pip install zizmor==${INPUT_VERSION} --root-user-action=ignore
         fi
       shell: sh
 
