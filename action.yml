@@ -41,6 +41,7 @@ runs:
 
     - name: Setup python
       if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.pip-installed == 'false' }}
+      id: setup-python
       uses: actions/setup-python@v5
       with:
         python-version: "3.x"
@@ -52,9 +53,9 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         if [ "${INPUT_VERSION}" = "latest" ]; then
-          python -m pip install zizmor
+          ${{ steps.setup-python.outputs.python-path }} -m pip install zizmor
         else
-          python -m pip install zizmor==${INPUT_VERSION}
+          ${{ steps.setup-python.outputs.python-path }} -m pip install zizmor==${INPUT_VERSION}
         fi
       shell: sh
 
