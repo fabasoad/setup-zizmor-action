@@ -52,10 +52,12 @@ runs:
       env:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
+        python_version_minor="$(echo "${{ steps.setup-python.outputs.python-version }}" | cut -d '.' -f 1,2)"
+        python_exec="${{ steps.setup-python.outputs.python-path || 'python' }}${python_version_minor}"
         if [ "${INPUT_VERSION}" = "latest" ]; then
-          ${{ steps.setup-python.outputs.python-path && format('{0}{1}', steps.setup-python.outputs.python-path, steps.setup-python.outputs.python-version) || 'python' }} -m pip install zizmor --root-user-action=ignore
+          ${python_exec} --root-user-action=ignore -m pip install zizmor
         else
-          ${{ steps.setup-python.outputs.python-path && format('{0}{1}', steps.setup-python.outputs.python-path, steps.setup-python.outputs.python-version) || 'python' }} -m pip install zizmor==${INPUT_VERSION} --root-user-action=ignore
+          ${python_exec} --root-user-action=ignore -m pip install zizmor==${INPUT_VERSION}
         fi
       shell: sh
 
