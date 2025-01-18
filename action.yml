@@ -53,9 +53,9 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         if [ "${INPUT_VERSION}" = "latest" ]; then
-          ${{ format('{0}3', steps.setup-python.outputs.python-path) || 'python' }} -m pip install zizmor --root-user-action=ignore
+          ${{ steps.setup-python.outputs.python-path && format('{0}{1}', steps.setup-python.outputs.python-path, steps.setup-python.outputs.python-version) || 'python' }} -m pip install zizmor --root-user-action=ignore
         else
-          ${{ format('{0}3', steps.setup-python.outputs.python-path) || 'python' }} -m pip install zizmor==${INPUT_VERSION} --root-user-action=ignore
+          ${{ steps.setup-python.outputs.python-path && format('{0}{1}', steps.setup-python.outputs.python-path, steps.setup-python.outputs.python-version) || 'python' }} -m pip install zizmor==${INPUT_VERSION} --root-user-action=ignore
         fi
       shell: sh
 
