@@ -48,6 +48,7 @@ runs:
     - name: Setup pip
       if: ${{ steps.info.outputs.bin-installed == 'false' && steps.info.outputs.pip-installed == 'false' }}
       run: python -m ensurepip --upgrade
+      shell: sh
 
     - name: Install zizmor
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
