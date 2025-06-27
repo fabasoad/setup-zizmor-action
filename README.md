@@ -41,3 +41,7 @@ None.
 |-----------|-------------------------------------|---------|
 | installed | Whether zizmor was installed or not | `true`  |
 <!-- prettier-ignore-end -->
+
+## Contributions
+
+![Alt](https://repobeats.axiom.co/api/embed/70052d1694b172ac5a5f3ef75c1b1cd6db1166a0.svg "Repobeats analytics image")
